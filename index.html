@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الوظيفة رقم 01 في المعلوماتية - ثانوية أسماء بنت أبي بكر</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; }
+    body {
+      background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 50%, #ede9fe 100%);
+      background-attachment: fixed;
+      margin: 0; padding: 24px 12px;
+      display: flex; justify-content: center; min-height: 100vh;
+    }
+    .container {
+      background: #fff; max-width: 760px; width: 100%;
+      border-radius: 16px; padding: 32px; box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    }
+    .header { text-align: center; border-bottom: 3px solid #1a2b4c; padding-bottom: 18px; margin-bottom: 8px; }
+    .header .republic { font-size: 16px; font-weight: 700; color: #1a2b4c; margin: 2px 0; }
+    .header .ministry { font-size: 15px; font-weight: 700; color: #2a3f6a; margin: 2px 0; }
+    .header .direction { font-size: 14px; font-weight: 700; color: #33415c; margin: 2px 0; }
+    .header .school { font-size: 15px; font-weight: 700; color: #1a2b4c; margin: 6px 0 2px; }
+    .header .divider { width: 60px; height: 2px; background: #3b6cf0; margin: 12px auto 0; border-radius: 2px; }
+
+    .exam-title {
+      text-align: center; color: #1a2b4c; font-size: 22px;
+      font-weight: 800; margin: 18px 0 4px;
+    }
+    .exam-author {
+      text-align: center; color: #3b6cf0; font-size: 14px;
+      font-weight: 700; margin: 0 0 8px;
+    }
+    .exam-info { text-align: center; color: #5a6b8a; font-size: 13px; margin-bottom: 24px; }
+    label { display: block; font-weight: 600; color: #1a2b4c; margin-bottom: 6px; font-size: 15px; }
+    input[type="text"], select {
+      width: 100%; padding: 12px 14px; border: 1px solid #cfd8e3;
+      border-radius: 10px; font-size: 15px; background: #f9fbfd; direction: rtl;
+    }
+    input[type="text"]:focus, select:focus { outline: none; border-color: #3b6cf0; background: #fff; }
+    .form-group { margin-bottom: 20px; }
+    .section-title {
+      background: #1a2b4c; color: #fff; padding: 10px 16px;
+      border-radius: 10px; font-size: 16px; font-weight: 700; margin: 28px 0 16px;
+    }
+    .question {
+      background: #f9fbfd; border: 1px solid #e2e8f0;
+      border-radius: 12px; padding: 16px; margin-bottom: 14px;
+    }
+    .question p.q-text { font-weight: 600; color: #1a2b4c; margin: 0 0 12px; font-size: 15px; }
+    .option { display: flex; align-items: center; gap: 8px; padding: 6px 0; cursor: pointer; font-size: 14px; color: #33415c; }
+    .option input { accent-color: #3b6cf0; width: 16px; height: 16px; cursor: pointer; }
+    button {
+      width: 100%; padding: 14px; background: #1a2b4c; color: #fff;
+      border: none; border-radius: 10px; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background .2s; margin-top: 24px;
+    }
+    button:hover { background: #2a3f6a; }
+    button:disabled { background: #8a9bb5; cursor: not-allowed; }
+    .message { text-align: center; margin-top: 16px; font-weight: 600; font-size: 14px; min-height: 20px; }
+    .message.success { color: #1e7e34; }
+    .message.error { color: #c0392b; }
+    .message.info { color: #3b6cf0; }
+    .note { font-size: 12px; color: #8a9bb5; text-align: center; margin-top: 20px; line-height: 1.6; }
+    #resultScreen { display: none; }
+    .result-card {
+      text-align: center; padding: 24px 16px;
+      background: #f9fbfd; border: 2px solid #dbeafe;
+      border-radius: 16px; margin: 8px 0 24px;
+    }
+    .result-card .icon { font-size: 48px; line-height: 1; margin-bottom: 8px; }
+    .result-card h2 { color: #1a2b4c; font-size: 20px; margin: 0 0 8px; }
+    .result-card .student-info { color: #33415c; font-size: 15px; margin-bottom: 16px; line-height: 1.7; }
+    .result-card .score-box {
+      display: inline-block;
+      background: linear-gradient(135deg, #1a2b4c 0%, #3b6cf0 100%);
+      color: #fff; padding: 18px 32px; border-radius: 16px; margin: 8px 0;
+    }
+    .result-card .score-box .score-num { font-size: 40px; font-weight: 800; display: block; }
+    .result-card .score-box .score-total { font-size: 14px; opacity: .85; }
+    .result-card .details { margin-top: 16px; font-size: 13px; color: #5a6b8a; }
+    .result-card .details span { display: inline-block; margin: 0 8px; }
+    .result-card .details .correct { color: #1e7e34; font-weight: 700; }
+    .result-card .details .wrong { color: #c0392b; font-weight: 700; }
+
+    /* ===== Home Button ===== */
+    .btn-home {
+      display: inline-block;
+      width: auto;
+      padding: 12px 28px;
+      background: #ffffff;
+      color: #1a2b4c;
+      border: 2px solid #1a2b4c;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: background .2s;
+    }
+    .btn-home:hover { background: #f0f4f8; }
+
+    #alreadySubmittedScreen { display: none; }
+    .already-card {
+      text-align: center; padding: 32px 24px;
+      background: #fef3c7; border: 2px solid #f59e0b;
+      border-radius: 16px; margin: 16px 0;
+    }
+    .already-card .icon { font-size: 48px; line-height: 1; margin-bottom: 12px; }
+    .already-card h2 { color: #92400e; font-size: 20px; margin: 0 0 12px; }
+    .already-card p { color: #78350f; font-size: 15px; line-height: 1.7; margin: 0 0 8px; }
+
+    @media (max-width: 480px) {
+      .container { padding: 20px 16px; }
+      .header .republic { font-size: 14px; }
+      .header .ministry { font-size: 13px; }
+      .header .direction { font-size: 12px; }
+      .header .school { font-size: 13px; }
+      .exam-title { font-size: 18px; }
+      .exam-author { font-size: 12px; }
+      .result-card .score-box .score-num { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="republic">الجمهورية الجزائرية الديمقراطية الشعبية</div>
+      <div class="ministry">وزارة التربية الوطنية</div>
+      <div class="direction">مديرية التربية لولاية أم البواقي</div>
+      <div class="school">ثانوية أسماء بنت أبي بكر — عين البيضاء</div>
+      <div class="divider"></div>
+    </div>
+
+    <div class="exam-title">الوظيفة رقم 01 في المعلوماتية</div>
+    <p class="exam-author">من إعداد الأستاذ: رضوان فراق</p>
+    <p class="exam-info">تتكون الوظيفة من 20 سؤالاً — يرجى الإجابة على جميع الأسئلة ثم الضغط على إرسال</p>
+
+    <!-- ===== FORM ===== -->
+    <form id="homeworkForm">
+      <div class="form-group">
+        <label for="name">الاسم و اللقب</label>
+        <input type="text" id="name" name="name" placeholder="اكتب اسمك و لقبك هنا" required autocomplete="off">
+        <div id="nameStatus" class="message" style="min-height:0; margin-top:8px; font-size:13px; font-weight:600;"></div>
+      </div>
+      <div class="form-group">
+        <label for="section">القسم</label>
+        <select id="section" name="section" required>
+          <option value="ج م ع ت 4" selected>ج م ع ت 4</option>
+          <option value="ج م ع ت 5">ج م ع ت 5</option>
+        </select>
+      </div>
+
+      <div class="section-title">القسم الأول: تقنية المعلومات</div>
+
+      <div class="question" data-correct="b">
+        <p class="q-text">1) ما هو المصطلح الذي يُطلق على استخدام الحاسوب والشبكات لمعالجة وتخزين ونقل المعلومات؟</p>
+        <label class="option"><input type="radio" name="q1" value="a" required> أ) البرمجة</label>
+        <label class="option"><input type="radio" name="q1" value="b"> ب) تقنية المعلومات</label>
+        <label class="option"><input type="radio" name="q1" value="c"> ج) الذكاء الاصطناعي</label>
+        <label class="option"><input type="radio" name="q1" value="d"> د) الشبكات الاجتماعية</label>
+      </div>
+
+      <div class="question" data-correct="c">
+        <p class="q-text">2) أيٌّ من التالي يُعد من مكونات تقنية المعلومات؟</p>
+        <label class="option"><input type="radio" name="q2" value="a" required> أ) الأجهزة فقط</label>
+        <label class="option"><input type="radio" name="q2" value="b"> ب) البرمجيات فقط</label>
+        <label class="option"><input type="radio" name="q2" value="c"> ج) الأجهزة والبرمجيات والشبكات والبيانات</label>
+        <label class="option"><input type="radio" name="q2" value="d"> د) الكهرباء فقط</label>
+      </div>
+
+      <div class="question" data-correct="a">
+        <p class="q-text">3) ما المقصود بـ "البيانات" في تقنية المعلومات؟</p>
+        <label class="option"><input type="radio" name="q3" value="a" required> أ) حقائق وأرقام خام غير معالجة</label>
+        <label class="option"><input type="radio" name="q3" value="b"> ب) معلومات جاهزة للاستخدام</label>
+        <label class="option"><input type="radio" name="q3" value="c"> ج) برامج التطبيقات</label>
+        <label class="option"><input type="radio" name="q3" value="d"> د) وحدات التخزين</label>
+      </div>
+
+      <div class="question" data-correct="d">
+        <p class="q-text">4) أيٌّ من التالي يُعد من أجهزة الإدخال؟</p>
+        <label class="option"><input type="radio" name="q4" value="a" required> أ) الشاشة</label>
+        <label class="option"><input type="radio" name="q4" value="b"> ب) الطابعة</label>
+        <label class="option"><input type="radio" name="q4" value="c"> ج) السماعات</label>
+        <label class="option"><input type="radio" name="q4" value="d"> د) لوحة المفاتيح</label>
+      </div>
+
+      <div class="question" data-correct="b">
+        <p class="q-text">5) ما هي وحدة المعالجة المركزية (CPU)؟</p>
+        <label class="option"><input type="radio" name="q5" value="a" required> أ) وحدة تخزين البيانات</label>
+        <label class="option"><input type="radio" name="q5" value="b"> ب) عقل الحاسوب المسؤول عن تنفيذ الأوامر</label>
+        <label class="option"><input type="radio" name="q5" value="c"> ج) جهاز إدخال</label>
+        <label class="option"><input type="radio" name="q5" value="d"> د) جهاز إخراج</label>
+      </div>
+
+      <div class="section-title">القسم الثاني: تجميع الحاسوب</div>
+
+      <div class="question" data-correct="c">
+        <p class="q-text">6) ما هي اللوحة الرئيسية التي تُركّب عليها جميع مكونات الحاسوب؟</p>
+        <label class="option"><input type="radio" name="q6" value="a" required> أ) القرص الصلب</label>
+        <label class="option"><input type="radio" name="q6" value="b"> ب) وحدة الطاقة</label>
+        <label class="option"><input type="radio" name="q6" value="c"> ج) اللوحة الأم (Motherboard)</label>
+        <label class="option"><input type="radio" name="q6" value="d"> د) كرت الشاشة</label>
+      </div>
+
+      <div class="question" data-correct="a">
+        <p class="q-text">7) ما هي وظيفة وحدة الطاقة (PSU)؟</p>
+        <label class="option"><input type="radio" name="q7" value="a" required> أ) تحويل التيار الكهربائي وتوزيعه على المكونات</label>
+        <label class="option"><input type="radio" name="q7" value="b"> ب) تخزين البيانات</label>
+        <label class="option"><input type="radio" name="q7" value="c"> ج) معالجة الرسوميات</label>
+        <label class="option"><input type="radio" name="q7" value="d"> د) توصيل الحاسوب بالإنترنت</label>
+      </div>
+
+      <div class="question" data-correct="d">
+        <p class="q-text">8) أيٌّ من التالي يُعد من أنواع الذاكرة العشوائية (RAM)؟</p>
+        <label class="option"><input type="radio" name="q8" value="a" required> أ) HDD</label>
+        <label class="option"><input type="radio" name="q8" value="b"> ب) SSD</label>
+        <label class="option"><input type="radio" name="q8" value="c"> ج) ROM</label>
+        <label class="option"><input type="radio" name="q8" value="d"> د) DDR4</label>
+      </div>
+
+      <div class="question" data-correct="b">
+        <p class="q-text">9) ما هو المقبس (Socket) في اللوحة الأم؟</p>
+        <label class="option"><input type="radio" name="q9" value="a" required> أ) مكان تركيب الذاكرة</label>
+        <label class="option"><input type="radio" name="q9" value="b"> ب) مكان تركيب المعالج</label>
+        <label class="option"><input type="radio" name="q9" value="c"> ج) مكان تركيب القرص الصلب</label>
+        <label class="option"><input type="radio" name="q9" value="d"> د) مكان تركيب وحدة الطاقة</label>
+      </div>
+
+      <div class="question" data-correct="c">
+        <p class="q-text">10) ما هي وظيفة المعجون الحراري (Thermal Paste)؟</p>
+        <label class="option"><input type="radio" name="q10" value="a" required> أ) تثبيت المعالج في مكانه</label>
+        <label class="option"><input type="radio" name="q10" value="b"> ب) توصيل الكهرباء للمعالج</label>
+        <label class="option"><input type="radio" name="q10" value="c"> ج) تحسين نقل الحرارة بين المعالج والمشتت</label>
+        <label class="option"><input type="radio" name="q10" value="d"> د) تنظيف المكونات</label>
+      </div>
+
+      <div class="section-title">القسم الثالث: وحدات قياس الذاكرة</div>
+
+      <div class="question" data-correct="b">
+        <p class="q-text">11) كم بايت في الكيلوبايت الواحد (KB)؟</p>
+        <label class="option"><input type="radio" name="q11" value="a" required> أ) 100 بايت</label>
+        <label class="option"><input type="radio" name="q11" value="b"> ب) 1024 بايت</label>
+        <label class="option"><input type="radio" name="q11" value="c"> ج) 512 بايت</label>
+        <label class="option"><input type="radio" name="q11" value="d"> د) 2048 بايت</label>
+      </div>
+
+      <div class="question" data-correct="a">
+        <p class="q-text">12) كم ميجابايت في الجيجابايت الواحد (GB)؟</p>
+        <label class="option"><input type="radio" name="q12" value="a" required> أ) 1024 ميجابايت</label>
+        <label class="option"><input type="radio" name="q12" value="b"> ب) 100 ميجابايت</label>
+        <label class="option"><input type="radio" name="q12" value="c"> ج) 512 ميجابايت</label>
+        <label class="option"><input type="radio" name="q12" value="d"> د) 2048 ميجابايت</label>
+      </div>
+
+      <div class="question" data-correct="d">
+        <p class="q-text">13) ما هي أصغر وحدة لقياس البيانات؟</p>
+        <label class="option"><input type="radio" name="q13" value="a" required> أ) البايت</label>
+        <label class="option"><input type="radio" name="q13" value="b"> ب) الكيلوبايت</label>
+        <label class="option"><input type="radio" name="q13" value="c"> ج) النيبل</label>
+        <label class="option"><input type="radio" name="q13" value="d"> د) البت</label>
+      </div>
+
+      <div class="question" data-correct="b">
+        <p class="q-text">14) كم بت في البايت الواحد؟</p>
+        <label class="option"><input type="radio" name="q14" value="a" required> أ) 4 بت</label>
+        <label class="option"><input type="radio" name="q14" value="b"> ب) 8 بت</label>
+        <label class="option"><input type="radio" name="q14" value="c"> ج) 16 بت</label>
+        <label class="option"><input type="radio" name="q14" value="d"> د) 32 بت</label>
+      </div>
+
+      <div class="question" data-correct="c">
+        <p class="q-text">15) ما هو التيرابايت (TB)؟</p>
+        <label class="option"><input type="radio" name="q15" value="a" required> أ) 1000 جيجابايت</label>
+        <label class="option"><input type="radio" name="q15" value="b"> ب) 512 جيجابايت</label>
+        <label class="option"><input type="radio" name="q15" value="c"> ج) 1024 جيجابايت</label>
+        <label class="option"><input type="radio" name="q15" value="d"> د) 2048 جيجابايت</label>
+      </div>
+
+      <div class="section-title">القسم الرابع: نظام التشغيل</div>
+
+      <div class="question" data-correct="a">
+        <p class="q-text">16) ما هو نظام التشغيل؟</p>
+        <label class="option"><input type="radio" name="q16" value="a" required> أ) برنامج يدير موارد الحاسوب ويوفر بيئة لتشغيل البرامج</label>
+        <label class="option"><input type="radio" name="q16" value="b"> ب) جهاز إدخال</label>
+        <label class="option"><input type="radio" name="q16" value="c"> ج) وحدة تخزين</label>
+        <label class="option"><input type="radio" name="q16" value="d"> د) نوع من الذاكرة</label>
+      </div>
+
+      <div class="question" data-correct="c">
+        <p class="q-text">17) أيٌّ من التالي يُعد نظام تشغيل؟</p>
+        <label class="option"><input type="radio" name="q17" value="a" required> أ) Word</label>
+        <label class="option"><input type="radio" name="q17" value="b"> ب) Chrome</label>
+        <label class="option"><input type="radio" name="q17" value="c"> ج) Windows</label>
+        <label class="option"><input type="radio" name="q17" value="d"> د) Excel</label>
+      </div>
+
+      <div class="question" data-correct="b">
+        <p class="q-text">18) ما هي وظيفة نظام التشغيل فيما يتعلق بإدارة الذاكرة؟</p>
+        <label class="option"><input type="radio" name="q18" value="a" required> أ) زيادة حجم الذاكرة الفيزيائية</label>
+        <label class="option"><input type="radio" name="q18" value="b"> ب) تخصيص الذاكرة للبرامج وتحريرها بعد الانتهاء</label>
+        <label class="option"><input type="radio" name="q18" value="c"> ج) تصنيع الذاكرة</label>
+        <label class="option"><input type="radio" name="q18" value="d"> د) لا علاقة له بالذاكرة</label>
+      </div>
+
+      <div class="question" data-correct="d">
+        <p class="q-text">19) ما هو المقصود بواجهة المستخدم الرسومية (GUI)؟</p>
+        <label class="option"><input type="radio" name="q19" value="a" required> أ) واجهة تعتمد على كتابة الأوامر فقط</label>
+        <label class="option"><input type="radio" name="q19" value="b"> ب) واجهة تعتمد على الصوت فقط</label>
+        <label class="option"><input type="radio" name="q19" value="c"> ج) واجهة تعتمد على اللمس فقط</label>
+        <label class="option"><input type="radio" name="q19" value="d"> د) واجهة تعتمد على النوافذ والأيقونات والرسوم</label>
+      </div>
+
+      <div class="question" data-correct="a">
+        <p class="q-text">20) أيٌّ من التالي يُعد من أنظمة التشغيل مفتوحة المصدر؟</p>
+        <label class="option"><input type="radio" name="q20" value="a" required> أ) Linux</label>
+        <label class="option"><input type="radio" name="q20" value="b"> ب) Windows</label>
+        <label class="option"><input type="radio" name="q20" value="c"> ج) macOS</label>
+        <label class="option"><input type="radio" name="q20" value="d"> د) iOS</label>
+      </div>
+
+      <button type="submit" id="submitBtn">إرسال الوظيفة</button>
+      <div id="message" class="message"></div>
+    </form>
+
+    <!-- ===== RESULT ===== -->
+    <div id="resultScreen">
+      <div class="result-card">
+        <div class="icon">🎉</div>
+        <h2>تم إرسال وظيفتك بنجاح</h2>
+        <div class="student-info" id="studentInfo"></div>
+        <div class="score-box">
+          <span class="score-num" id="scoreNum">0</span>
+          <span class="score-total">على 20</span>
+        </div>
+        <div class="details" id="resultDetails"></div>
+
+        <div>
+          <button type="button" class="btn-home" id="homeBtn">🏠 العودة إلى الصفحة الرئيسية</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ALREADY SUBMITTED ===== -->
+    <div id="alreadySubmittedScreen">
+      <div class="already-card">
+        <div class="icon">⚠️</div>
+        <h2>هذا الاسم سجّل إرسالاً مسبقاً</h2>
+        <p>لقد قمت بإرسال هذه الوظيفة من قبل. لا يمكنك إعادة إرسالها مرة أخرى.</p>
+        <p>إذا كنت تعتقد أن هذا خطأ، تواصل مع الأستاذ.</p>
+      </div>
+    </div>
+
+    <p class="note">سيتم احتساب الدرجة تلقائياً (من 20) وإرسال الاسم والقسم والعلامة. لا يمكن تعديل الإجابة بعد الإرسال.</p>
+  </div>
+
+  <script>
+// ⚠️ Replace this with your Google Apps Script Web App URL (ends with /exec)
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5thEVFyQ8NIwrskFiV5Pl-IWNsMjSMmGpi4X3QrlPVK9CWYNPxE3bXLJR8c0-C4/exec";
+
+    const form = document.getElementById("homeworkForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const messageEl = document.getElementById("message");
+    const nameInput = document.getElementById("name");
+    const nameStatus = document.getElementById("nameStatus");
+    const resultScreen = document.getElementById("resultScreen");
+    const alreadySubmittedScreen = document.getElementById("alreadySubmittedScreen");
+    const studentInfo = document.getElementById("studentInfo");
+    const scoreNum = document.getElementById("scoreNum");
+    const resultDetails = document.getElementById("resultDetails");
+    const homeBtn = document.getElementById("homeBtn");
+
+    let nameExists = false;
+
+    function normalizeName(str) {
+      return String(str).replace(/\s+/g, " ").trim().toLowerCase();
+    }
+
+    function jsonpCheck(name) {
+      return new Promise((resolve, reject) => {
+        const cbName = "__jsonpCheck_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
+        const script = document.createElement("script");
+        let done = false;
+
+        window[cbName] = function (data) {
+          done = true;
+          try { resolve(data); } finally {
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+          }
+        };
+
+        script.src = SCRIPT_URL
+          + "?action=check"
+          + "&callback=" + cbName
+          + "&name=" + encodeURIComponent(name);
+
+        script.onerror = function () {
+          if (done) return;
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          reject(new Error("network"));
+        };
+
+        document.body.appendChild(script);
+
+        setTimeout(() => {
+          if (done) return;
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          reject(new Error("timeout"));
+        }, 10000);
+      });
+    }
+
+    nameInput.addEventListener("blur", async function () {
+      const name = normalizeName(nameInput.value);
+      nameStatus.textContent = "";
+      nameStatus.className = "message";
+      nameStatus.style.minHeight = "0";
+      nameStatus.style.marginTop = "8px";
+      nameStatus.style.fontSize = "13px";
+      nameStatus.style.fontWeight = "600";
+
+      if (!name) return;
+
+      nameStatus.textContent = "جاري التحقق من الاسم...";
+      nameStatus.style.color = "#3b6cf0";
+
+      try {
+        const data = await jsonpCheck(name);
+        if (data && data.exists === true) {
+          nameExists = true;
+          nameStatus.textContent = "⚠️ هذا الاسم سجّل إرسالاً مسبقاً.";
+          nameStatus.style.color = "#c0392b";
+          form.style.display = "none";
+          alreadySubmittedScreen.style.display = "block";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          nameExists = false;
+          nameStatus.textContent = "✔ الاسم متاح للإرسال.";
+          nameStatus.style.color = "#1e7e34";
+        }
+      } catch (err) {
+        nameStatus.textContent = "تعذر التحقق من الاسم (تحقق من الاتصال).";
+        nameStatus.style.color = "#c0392b";
+      }
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      if (nameExists) {
+        form.style.display = "none";
+        alreadySubmittedScreen.style.display = "block";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "جاري الإرسال...";
+      messageEl.textContent = "";
+      messageEl.className = "message";
+
+      const studentName = normalizeName(nameInput.value);
+      const studentSection = document.getElementById("section").value;
+
+      if (!studentName) {
+        messageEl.textContent = "❌ يرجى إدخال الاسم و اللقب.";
+        messageEl.classList.add("error");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "إرسال الوظيفة";
+        return;
+      }
+
+      const questions = document.querySelectorAll(".question");
+      let score = 0;
+      let correctCount = 0;
+
+      questions.forEach((q, i) => {
+        const key = "q" + (i + 1);
+        const selected = q.querySelector('input[name="' + key + '"]:checked');
+        const chosen = selected ? selected.value : "";
+        if (chosen === q.dataset.correct) {
+          score++;
+          correctCount++;
+        }
+      });
+
+      const wrongCount = questions.length - correctCount;
+
+      const hiddenForm = document.createElement("form");
+      hiddenForm.action = SCRIPT_URL;
+      hiddenForm.method = "POST";
+      hiddenForm.target = "hidden_iframe";
+      hiddenForm.style.display = "none";
+
+      const fields = {
+        name: studentName,
+        section: studentSection,
+        score: score
+      };
+
+      for (const key in fields) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = fields[key];
+        hiddenForm.appendChild(input);
+      }
+
+      let iframe = document.getElementById("hidden_iframe");
+      if (!iframe) {
+        iframe = document.createElement("iframe");
+        iframe.name = "hidden_iframe";
+        iframe.id = "hidden_iframe";
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
+      }
+
+      document.body.appendChild(hiddenForm);
+      hiddenForm.submit();
+      document.body.removeChild(hiddenForm);
+
+      setTimeout(() => {
+        showResult(studentName, studentSection, score, correctCount, wrongCount);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "إرسال الوظيفة";
+      }, 500);
+    });
+
+    function showResult(name, section, score, correctCount, wrongCount) {
+      form.style.display = "none";
+      alreadySubmittedScreen.style.display = "none";
+      resultScreen.style.display = "block";
+
+      studentInfo.innerHTML = "<strong>" + name + "</strong><br>القسم: " + section;
+      scoreNum.textContent = score;
+
+      resultDetails.innerHTML =
+        "<span class='correct'>✔ صحيحة: " + correctCount + "</span>" +
+        "<span class='wrong'>✘ خاطئة: " + wrongCount + "</span>";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    homeBtn.addEventListener("click", function () {
+      resultScreen.style.display = "none";
+      alreadySubmittedScreen.style.display = "none";
+      form.style.display = "block";
+      form.reset();
+      messageEl.textContent = "";
+      messageEl.className = "message";
+      nameStatus.textContent = "";
+      nameExists = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
